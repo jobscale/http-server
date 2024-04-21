@@ -1,14 +1,28 @@
-const { createServer } = require('http');
+const http = require('http');
 
-const PORT = process.env.PORT || 3000;
 const logger = console;
+const PORT = process.env.PORT || 3000;
 
-const server = createServer((req, res) => {
+const app = (req, res) => {
   logger.info(new Date().toISOString(), req.headers);
-  res.writeHead(301, { 'Location': 'https://www.emplo.jp' });
+  res.writeHead(301, { 'Location': 'https://jsx.jp' });
   res.end();
-});
+};
 
-server.listen(PORT, () => {
-  logger.info(`Server is listening on port ${PORT}`);
-});
+const main = async () => {
+  const server = http.createServer(app);
+  const options = {
+    host: '0.0.0.0',
+    port: PORT,
+  };
+  server.listen(options, () => {
+    logger.info(JSON.stringify({
+      Server: 'Started',
+      'Listen on': `http://127.0.0.1:${options.port}`,
+    }, null, 2));
+  });
+};
+
+module.exports = {
+  server: main(),
+};
